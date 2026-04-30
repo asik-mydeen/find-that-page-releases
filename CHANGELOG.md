@@ -2,6 +2,11 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.0.1 — 2026-04-30 — CI pipeline verification
+
+- Release workflow hardened: removed a redundant `gh auth login` call that fought with `GH_TOKEN`, dropped the noisy upload-artifact step that was hitting storage quota.
+- No user-facing changes from v1.0.0. Reinstalling is a no-op.
+
 ## 1.0.0 — 2026-04-30 — First public release
 
 ### Search

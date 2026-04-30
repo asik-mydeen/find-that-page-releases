@@ -142,7 +142,7 @@ Type these inside the search input and press Tab to lock in as chips:
 - On-demand content-script injection via `chrome.scripting.executeScript` so the overlay and "Index this page" work on tabs that pre-date the extension install.
 - Firefox MV3 supported via direct-Worker fallback (no offscreen document).
 
-Source, issues, and roadmap: https://github.com/asik-mydeen/find-that-page (replace with your public repo if different)
+Release notes, issues, and support: https://github.com/asik-mydeen/find-that-page-releases
 
 ---
 
@@ -209,12 +209,16 @@ Check the following in the privacy practices form; everything else should be unc
 
 ## Privacy policy (hosted separately — see PRIVACY_POLICY.md)
 
-The Chrome Web Store requires a public URL hosting the privacy policy. Copy the contents of `PRIVACY_POLICY.md` to a public page (GitHub Pages, your own site, or a Gist) and paste that URL into the store listing's "Privacy policy" field.
+Privacy policy is published at:
+
+  https://asik-mydeen.github.io/find-that-page-releases/PRIVACY_POLICY
+
+Paste that URL into the store listing's "Privacy policy" field. Source of truth is `store/PRIVACY_POLICY.md` in this repo, mirrored to `asik-mydeen/find-that-page-releases` on every `npm run release`.
 
 ## Support contact
 
 Email: support@findthatpage.app
-GitHub issues: https://github.com/asik-mydeen/find-that-page/issues
+GitHub issues: https://github.com/asik-mydeen/find-that-page-releases/issues
 
 *(Update both before submission.)*
 

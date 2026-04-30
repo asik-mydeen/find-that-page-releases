@@ -95,6 +95,6 @@ If the extension's data practices change in a future version, this policy will b
 ## Contact
 
 - Email: support@findthatpage.app
-- GitHub Issues: https://github.com/asik-mydeen/find-that-page/issues
+- GitHub Issues: https://github.com/asik-mydeen/find-that-page-releases/issues
 
 *(Replace the above with real contact points before publishing.)*

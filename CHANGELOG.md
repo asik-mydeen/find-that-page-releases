@@ -2,6 +2,33 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.4.0 — 2026-05-01 — High-coverage indexing for chat sites
+
+Long AI chats (ChatGPT, Claude, Gemini) now get 3× the indexing coverage
+of regular pages, with near-real-time re-indexing so streaming replies
+become searchable within a minute.
+
+### What changed
+- **150,000-char index cap** (was 50,000) for high-coverage domains —
+  covers ~25,000 words of conversation per chat, up from ~8,000.
+- **45-second re-index cadence** with a 200-char delta threshold (was
+  10 minutes / 400 chars) — streaming responses surface quickly.
+- **Default list:** `chatgpt.com`, `chat.openai.com`, `claude.ai`,
+  `gemini.google.com`. Add your own in Options → Long content / chat sites.
+- **Subdomain-aware matching** shared with the excluded-domain logic —
+  `sub.chatgpt.com` picks up the setting too.
+
+### Scope guard
+- Privacy rules are unchanged; password-gated / banking / sensitive-path
+  pages are still blocked regardless of high-coverage status.
+- Keywords extraction still caps its input at 50k chars to avoid
+  spending serious time on giant conversations.
+
+### Tests
+- 16 new tests (11 for `matchesDomainList` — subdomain correctness, suffix
+  spoofing, case sensitivity — and 5 for the extractor `maxChars` override).
+- 195 tests green total.
+
 ## 1.3.0 — 2026-05-01 — Chunked body search, fuzzy fallback, redesigned settings
 
 ### Search depth

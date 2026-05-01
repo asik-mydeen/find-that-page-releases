@@ -1,4 +1,4 @@
-# Chrome Web Store Listing — FindThatPage v1.0.0
+# Chrome Web Store Listing — FindThatPage v1.3.0
 
 ## Name
 
@@ -224,4 +224,4 @@ GitHub issues: https://github.com/asik-mydeen/find-that-page-releases/issues
 
 ## Submission artifact
 
-Upload `store/dist/find-that-page-1.0.0-chrome.zip` (~565 KB) to the Chrome Web Store developer console.
+Upload `store/dist/find-that-page-1.3.0-chrome.zip` to the Chrome Web Store developer console.

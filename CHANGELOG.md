@@ -2,6 +2,64 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.3.0 — 2026-05-01 — Chunked body search, fuzzy fallback, redesigned settings
+
+### Search depth
+- **4× more content searchable per page.** Body text is now indexed as
+  overlapping ~3000-char chunks up to 20,000 chars total, replacing the
+  flat 5,000-char cap. "I read it somewhere" on long Wikipedia / GitHub /
+  blog posts now resolves.
+- **Schema v3 migration** rebuilds FTS from stored text on first run —
+  existing history gains chunked coverage without re-browsing.
+- Best-chunk-per-page aggregation keeps ranking meaningful; same term
+  appearing in multiple chunks no longer duplicates the page in results.
+
+### Fuzzy "Did you mean?"
+- Zero-hit queries now offer a one-click correction ("kuberntes" →
+  "kubernetes") in the popup, overlay, and full-tab search page.
+- Prefix-extension fallback: partial queries like "observabili" that
+  FTS5 porter can't prefix-match now get suggested the full word.
+- Toggleable in Settings → Search experience.
+
+### Options page redesign
+- Hero header with big-number stats (pages / domains / visits / pinned).
+- Sticky section nav. Card-style sections with coloured accent bars.
+- Modern switch-style toggles replace plain checkboxes.
+- Segmented Recent / Most-visited control.
+- Pause shortcuts extended: 15 min / 1 hour / 8 hour.
+
+### New user preferences (all sync-mirrored)
+- Show/hide "Did you mean?" suggestions
+- Default-open results in background tabs
+- Toggle word count on result cards
+- Persist Recent vs Most-visited sort globally (overridable per session)
+
+### New bulk action
+- **Delete all pages from a domain** — retroactive cleanup separate from
+  the exclude-list (exclude prevents future indexing; this clears
+  existing history).
+
+### Import & reliability
+- Fixes "Import failed — not a FindThatPage export?" for large export
+  files: the prior code bundled the full page list into one 64 MiB-capped
+  message. Now chunked into 200-page batches with per-chunk progress and
+  real error surfacing.
+- Tightened `isImportablePage` guards against malformed exports crashing
+  downstream UI string ops.
+- Scheme-check on open: `javascript:` / `data:` / `file:` URLs smuggled
+  via import or storage corruption now resolve to `about:blank` before
+  reaching `browser.tabs.create`.
+
+### Testing
+- 179 tests green (was 139). New coverage for the chunker, chunked
+  search ranking, fuzzy prefix matching, import validation, URL scheme
+  gating, and concurrent import races.
+- CI now gates releases on green typecheck + tests.
+
+### Performance
+- 50k-page bench: worst query 59ms p95 (was ~49ms pre-chunk). Trade of
+  ~1.5× latency for 4× content coverage. See `docs/BENCHMARKS.md`.
+
 ## 1.2.0 — 2026-04-30 — Bigger empty state, sort toggle, Firefox install polish
 
 - **Overlay empty-state:** raised the recents cap from 20 → 50 so you can actually scroll recent history without a query.

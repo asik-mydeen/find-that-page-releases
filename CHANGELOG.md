@@ -2,6 +2,20 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.4.1 — 2026-05-01 — Popup UX fixes
+
+- **"Recent" now means recent.** Default empty-state sort was silently
+  frecency (last-visit time weighted by visit count), so a frequently-
+  visited older page would outrank one you just opened. Now it's pure
+  last-visit order. "Most visited" sort still works as before.
+- **"Index this page" now tells you what happened.** Clicking it on a
+  URL already in the index used to say "Indexed." with no count change,
+  looking broken. It's now "Updated existing entry." (correct — dedupe
+  by normalized URL) versus "Added to memory." for a new row.
+- **Sort toggle added to the popup.** Recent / Most-visited tabs appear
+  when no query is entered. Changing it writes to settings so the
+  preference is consistent across the popup, overlay, and full search.
+
 ## 1.4.0 — 2026-05-01 — High-coverage indexing for chat sites
 
 Long AI chats (ChatGPT, Claude, Gemini) now get 3× the indexing coverage

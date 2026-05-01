@@ -2,6 +2,15 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.2.0 — 2026-04-30 — Bigger empty state, sort toggle, Firefox install polish
+
+- **Overlay empty-state:** raised the recents cap from 20 → 50 so you can actually scroll recent history without a query.
+- **New sort toggle** in the overlay: `Recent` (frecency — last visit boosted by visit count) vs. `Most visited` (raw visit count, tie-break by last visit). Applies to the entire page table, not just the visible 50.
+- **Clearer count label:** `Most recent 50 · 35 total` / `Most visited 50 · 35 total` / `N matches · 35 total` replaces the old `20 of 35 pages`, which read like an active filter.
+- **Sort preference persists** per tab via sessionStorage.
+- **Firefox build fix:** `offscreen` permission is now emitted only for Chromium-class builds. Firefox uses the direct-Worker fallback; it rejected the unknown permission outright before.
+- **Local install:** unpacked builds now mirror to `built-files/chrome-mv3/` AND `built-files/firefox/`. New `npm run sync:builds` script refreshes both from `.output/` between formal releases.
+
 ## 1.1.0 — 2026-04-30 — Branding + new icon set
 
 - Replaced the default puzzle-piece icon with a custom magnifying-glass-over-stacked-cards mark rendered at 16 / 32 / 48 / 96 / 128 and a 1024 master source.

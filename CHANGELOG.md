@@ -2,6 +2,13 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.1.0 — 2026-04-30 — Branding + new icon set
+
+- Replaced the default puzzle-piece icon with a custom magnifying-glass-over-stacked-cards mark rendered at 16 / 32 / 48 / 96 / 128 and a 1024 master source.
+- Chrome Web Store assets: 440×280 promo tile and 1400×560 marquee, both matching the in-extension palette (`#1d4ed8` → `#0f172a`).
+- Store listing URLs updated to link to the public releases repo.
+- No functional changes; search, chips, overlay, and indexing behave identically to v1.0.1.
+
 ## 1.0.1 — 2026-04-30 — CI pipeline verification
 
 - Release workflow hardened: removed a redundant `gh auth login` call that fought with `GH_TOKEN`, dropped the noisy upload-artifact step that was hitting storage quota.

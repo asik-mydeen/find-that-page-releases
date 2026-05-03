@@ -2,6 +2,47 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.5.0 — 2026-05-03 — Faster search, cleaner titles, recent-queries, better empty states
+
+Five independent wins, all shipping together. No schema change.
+
+### Search speed
+- **Background LRU query cache** (20 entries, 30 s TTL). Repeat searches
+  — re-opening the popup on the same query, clearing-and-retyping,
+  bouncing between two queries — now return in under a millisecond
+  instead of re-running FTS (previously 5-60 ms depending on corpus
+  size). Cache is invalidated in lockstep with every DB write via a
+  generation counter; no stale results after save/delete/import/clear.
+
+### Indexing quality
+- **Title cleanup on index.** Strips boilerplate site-name suffixes like
+  " — React", " | GitHub", " · Stack Overflow", " - Medium" when they
+  look like a site brand (contain the domain root or a known tail word:
+  Home, Blog, Docs, Wiki, News, Store). Keeps the real title; FTS5's
+  title-column BM25 weight stops being biased by the same repeated
+  brand on every page from that domain.
+- **Meta description fallback for summary.** When the auto-generated
+  first-3-sentences summary is under 40 chars (common on JS-heavy
+  sites that only have pre-render boilerplate at `document_idle`), fall
+  back to `meta[name="description"]` → `og:description` → `twitter:description`.
+  Better summaries on most SPAs.
+
+### UX
+- **Recent searches** (popup). When the search box is empty and you
+  have indexed history, the popup shows clickable chips for your last
+  8 productive searches (≥3 chars, non-empty result set). Case-
+  insensitive dedupe keeps repeats from filling the list. Persisted
+  locally — never synced across devices, there's a `Clear` button.
+- **Dead-query guard.** Queries that parse to nothing (all stopwords,
+  all too-short tokens like "a" or "!!") used to fall through silently
+  to the empty-state recents, making the UI look like it ignored the
+  input. Now shows "Type at least 3 letters to search." Empty input
+  still shows recents — that's the intended empty-state, not the guard.
+
+### Tests
+- +36 new tests (cleanTitle, queryCache, isQueryDead, recentQueries).
+- 231 total tests green.
+
 ## 1.4.1 — 2026-05-01 — Popup UX fixes
 
 - **"Recent" now means recent.** Default empty-state sort was silently

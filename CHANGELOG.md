@@ -2,6 +2,47 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.7.0 — 2026-05-03 — Readability extraction, language filtering, faceted search
+
+### Extraction quality
+- **Mozilla Readability.js swap.** Same engine Firefox Reader View uses.
+  On media/news/blog/docs sites it cuts nav/ads/sidebar/comments/related-posts
+  far more accurately than the old tag stripper. Falls back to the legacy
+  stripper when Readability declines a page or throws — safe by default.
+- Content-script bundle grew by ~36KB to accommodate Readability; only
+  loads inside content scripts, background/popup are unchanged.
+
+### Language
+- **Per-page language detection.** Every indexed page gets a BCP-47 code
+  — we prefer `<html lang="…">` when set, fall back to a tiny heuristic
+  scan over common function words in en/es/fr/de/pt/it. Stored on the
+  page row; import/export round-trips preserve it.
+- **New `lang:CODE` query grammar**: `lang:fr react` narrows to French-
+  tagged pages containing "react". Combines with `site:`, `in:`, `after:`,
+  `before:`, `today`, etc.
+
+### Faceted search (full-tab page)
+- **Facet rail** below the query hint with three chip groups:
+  - Top 8 **domains** with page counts (click to filter)
+  - **Time** buckets: Last 24h / 7d / 30d / Older (click appends the
+    right time token)
+  - **Language** chips (only shown when the corpus spans 2+ languages —
+    otherwise the group is hidden)
+- Counts reflect the current active filters but exclude the facet being
+  counted, so the domain chips still show alternatives when a domain
+  filter is active.
+- Runs in parallel with the main search — no added latency.
+
+### Tests
+- +20 new tests (detectLanguage, langFilter, lang integration tests,
+  Readability extractor smoke test).
+- 285 tests green total.
+
+### Schema
+- Additive: `pages.lang TEXT NOT NULL DEFAULT 'en'` column added via
+  `addColumnIfMissing`. Existing rows default to `'en'` and get the
+  real detected value on next revisit.
+
 ## 1.6.0 — 2026-05-03 — Time filters, pagination, title highlights, domain collapse
 
 ### Power-user query grammar

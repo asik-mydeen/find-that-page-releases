@@ -2,6 +2,47 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.6.0 — 2026-05-03 — Time filters, pagination, title highlights, domain collapse
+
+### Power-user query grammar
+- **Time-range filters**: `after:2024-01-01`, `before:yesterday`, `today`,
+  `yesterday`, `this-week`, `this-month`. Combine freely with other
+  tokens: `after:2024-10-01 react hooks` narrows ranked results to the
+  date window. Multiple `after:` narrows to the tightest floor.
+
+### Scale
+- **"Load 30 more" on the full-tab search page.** Previous 30-result cap
+  was a ceiling, not a convenience — now it's just the first page.
+  Cached per-page so paging back and forth is instant.
+
+### Speed
+- **Pre-warm SQLite on SW startup.** The first search after Chrome wakes
+  a suspended service worker used to eat 300-600ms compiling a prepared
+  statement; now it's primed in the bootstrap path. First search feels
+  instant.
+
+### UX polish (Tier C bundle)
+- **Highlighted matches in result titles**, not just body snippets. The
+  FTS highlight markers were already computed for titles — now rendered.
+- **Progressive Esc.** First Esc clears the query + chips; a second Esc
+  closes the overlay / popup. Previously a typo + Esc slammed it shut
+  and threw your text away.
+- **Per-token "Did you mean?" chips.** When there are 2+ corrections, you
+  get one clickable chip per suggestion — click replaces only that token
+  (Google/Kagi behaviour) — plus a small "Apply all" if you want every
+  suggestion at once. Single-correction flow unchanged.
+
+### Result list ergonomics
+- **Group-by-domain collapse.** When a single domain contributes ≥5 hits
+  to a query (not empty-state, not already domain-filtered), the top 2
+  results show, then a dashed "N more from domain.com →" row appears.
+  Click to expand. Keeps broad queries like "react" scannable when most
+  hits are from one site.
+
+### Tests
+- +46 new tests (collapseDomains, timeFilter, applyCorrection).
+- 264 total tests green.
+
 ## 1.5.0 — 2026-05-03 — Faster search, cleaner titles, recent-queries, better empty states
 
 Five independent wins, all shipping together. No schema change.

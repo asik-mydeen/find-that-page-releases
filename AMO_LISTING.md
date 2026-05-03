@@ -1,4 +1,4 @@
-# Firefox Add-ons (AMO) Listing — FindThatPage v1.5.0
+# Firefox Add-ons (AMO) Listing — FindThatPage v1.6.0
 
 All fields below are paste-ready for https://addons.mozilla.org/developers/ item submission.
 
@@ -137,6 +137,7 @@ Because the extension is built with WXT + TypeScript + Vite (i.e. compiled/bundl
 
 | Release | Firefox zip | Sources zip |
 |---|---|---|
+| 1.6.0 | `find-that-page-1.6.0-firefox.zip` | `find-that-page-1.6.0-sources.zip` |
 | 1.5.0 | `find-that-page-1.5.0-firefox.zip` | `find-that-page-1.5.0-sources.zip` |
 | 1.4.1 | `find-that-page-1.4.1-firefox.zip` | `find-that-page-1.4.1-sources.zip` |
 | 1.4.0 | `find-that-page-1.4.0-firefox.zip` | `find-that-page-1.4.0-sources.zip` |

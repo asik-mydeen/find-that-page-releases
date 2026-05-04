@@ -1,0 +1,15 @@
+# v1.8.0 · 2026-05-04
+
+See the [CHANGELOG](../../CHANGELOG.md) for the full feature log.
+
+## Downloads
+
+- `find-that-page-1.8.0-chrome.zip`
+- `find-that-page-1.8.0-firefox.zip`
+
+## SHA-256
+
+```
+1f55ee9bb42831e6a2a2a050ea2917648f1e167e11ac34866fc062ad7dd7b241  find-that-page-1.8.0-chrome.zip
+0aca691cfd23c77055ed2618537181f90c6daac08eca6d1dfd9d2a94a9dadbba  find-that-page-1.8.0-firefox.zip
+```

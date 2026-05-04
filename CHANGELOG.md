@@ -2,6 +2,55 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.8.0 — 2026-05-03 — Related pages, bulk forget, auto-pin, polish
+
+### New: related pages
+- **"Related" button on every result card.** One tap opens a modal with
+  up to 5 pages that share signal with this one: same topic (keyword
+  overlap), same site, or visited around the same time (±4 hours).
+  Each suggestion explains *why* it showed up — "Same site · github.com",
+  "Visited around the same time", "Shared keywords".
+- Good for "I remember reading about X when I was researching Y" — the
+  kind of connection keyword search alone can't surface.
+
+### Bulk operations
+- **"Forget all N matches"** on the full-tab search page. Deletes every
+  page matching the current query + chips + domain filter. Explicit
+  confirm dialog with the exact count; pinned pages are preserved
+  server-side regardless; capped at 500 deletions per click. Pairs
+  with the existing delete-by-domain for cleanup workflows.
+- **Top sources section** in Options. Shows the top 20 domains by
+  indexed page count with a quick-delete shortcut.
+
+### Ergonomics
+- **Keyboard shortcut for "Index this page now".** New command
+  (`index-this-page`) — users bind it via `chrome://extensions/shortcuts`.
+  Shows a small badge on the extension icon after: ✓ green for a new
+  row, ↺ blue for update, ✗ red on failure. Clears after 2s.
+- **Whole-card click-to-open.** Previously only the title/Open button
+  opened pages. Now the whole card is clickable; Cmd/Ctrl/Shift/
+  middle-click opens in a background tab.
+- **Copy URL button** in the card header (⧉ icon, flips to ✓ after
+  copy).
+- **Multi-term text fragment highlighting.** Chrome's `#:~:text=` URLs
+  now include up to 3 highlighted phrases from the snippet instead of
+  just the first — a multi-word query visibly highlights each match on
+  the destination page.
+- **Favicon broken-URL cache.** When one result card's favicon fails
+  to load, other cards showing the same URL skip the `<img>` entirely
+  and render the letter fallback — no reflow flash.
+
+### New setting
+- **Auto-pin frequently-visited pages** (opt-in, default off). Set a
+  visit-count threshold in Options → Search UX; pages that cross it
+  get auto-pinned so they float to the top of empty-state. Manual
+  unpin still wins until the threshold is crossed again.
+
+### Tests
+- +3 new tests for multi-fragment text highlight. 288 tests green
+  total. No schema change — everything uses existing columns or
+  computed at query time.
+
 ## 1.7.0 — 2026-05-03 — Readability extraction, language filtering, faceted search
 
 ### Extraction quality

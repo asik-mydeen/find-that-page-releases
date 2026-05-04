@@ -2,6 +2,31 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.8.4 — 2026-05-03 — Related: co-visit first, topical second
+
+User feedback made it clear that Related had the wrong mental model.
+The feature was computing "topically similar pages" (shared keywords),
+but the expected behavior is **"pages opened in the same sitting."**
+Rewritten to match:
+
+- **Primary signal — co-visit, ±10-minute window.** Every page whose
+  most-recent visit lands within 10 minutes of the source's latest
+  visit qualifies outright, no keyword overlap required. This is what
+  "related" meant all along.
+- **Secondary signal — topical inference.** Pages outside the time
+  window still appear if they share ≥2 meaningful keywords with the
+  source (or ≥1 AND the same site). Catches "I read about this last
+  week and again today."
+- **Ranking.** Co-visited results always come first, tightest
+  time-diff wins. Topical-only results fill the tail.
+- **Reason chips.** "Visited 3 min apart" / "Visited seconds apart" /
+  "2 shared keywords" / "Same site · example.com" — tells you *why*
+  each suggestion made it in.
+
+Previous ±4h window was catastrophically wrong: it swept in every
+unrelated tab in the same browser session. Tightening to ±10 min
+fixes the reported "Amazon approvals" → "Chrome extensions" problem.
+
 ## 1.8.3 — 2026-05-03 — Related now actually means related
 
 Reports on 1.8.2 showed Related still surfacing unrelated pages:

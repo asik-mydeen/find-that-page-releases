@@ -2,6 +2,23 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.8.2 — 2026-05-03 — Related correctness fix
+
+- **Fix:** Clicking **Related** on a page with keywords like `node.js`,
+  `c++`, `iOS-15`, or any term containing `.`, `+`, `-`, `:` crashed
+  with `sqlite3_step() rc= 1 SQLITE_ERROR` — those punctuation chars
+  blow up the FTS5 `MATCH` parser. Keywords are now sanitized to
+  `[a-z0-9]+` before being spliced into the query; non-alphanumeric
+  fragments are stripped, the longest remaining stem per keyword
+  survives.
+- **Fix:** Related panel was surfacing unrelated pages. The old query
+  fired as soon as *any* keyword prefix matched (e.g. `docker*`
+  matching "documentation") and always labelled the result "Shared
+  keywords" regardless. Now a candidate must share ≥2 distinct
+  keywords — or clear a real signal bar (same site / co-visited
+  ±4h) — to appear. Reasons now show the actual hit count:
+  "3 shared keywords".
+
 ## 1.8.1 — 2026-05-03 — Popup Related fix
 
 - **Fix:** The "Related" button introduced in 1.8.0 never rendered in the

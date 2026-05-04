@@ -2,6 +2,41 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.8.5 — 2026-05-04 — Show matching text from deep in the page
+
+Result cards were showing each page's summary instead of the actual
+phrase that matched your query. When the match was buried deep in the
+page body — which is most of the time for long articles and docs —
+there was no visual cue about *why* a result made it in.
+
+Root cause: FTS5 is configured in contentless mode (no body text
+stored in the FTS index — just the inverted index, to save ~50% of
+DB size). SQLite's built-in `snippet()` can't quote from a contentless
+index, so it was returning empty strings for deep-body matches. The
+card code then fell back to `page.summary`.
+
+Fix: client-side snippet synthesis. After FTS returns its ranked
+rows, for any row whose highlight columns are empty, we batch-load
+`pages.text` (already stored in the main table), find the first
+location of your query tokens, and slice ~180 chars of context around
+it with the matched phrase wrapped in `<mark>`. Runs only on the
+visible result set (default 30 rows) — no FTS index bloat, no
+schema change, no per-page network round-trips.
+
+- Matches are case-insensitive but preserve the page's original casing
+  in the rendered snippet.
+- Multi-term queries highlight every occurrence in the snippet window,
+  not just the first. Overlapping spans (e.g. `new` + `york` +
+  `new york`) collapse into a single merged highlight.
+- Ellipses (`…`) bracket the snippet when it's mid-sentence on either
+  side.
+
+### Tests
+- +10 new tests for `buildBodySnippet` covering empty input, deep
+  matches, ellipsis behavior, multi-term merge, Unicode/casing, and
+  maxLength clamps. 305 tests green.
+- No schema change.
+
 ## 1.8.4 — 2026-05-03 — Related: co-visit first, topical second
 
 User feedback made it clear that Related had the wrong mental model.

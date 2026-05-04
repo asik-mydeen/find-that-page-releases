@@ -2,6 +2,16 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.8.7 — 2026-05-04 — Top sources "Delete pages" actually deletes
+
+- **Fix:** Clicking **Delete pages** on a row in the **Top sources**
+  section used to pre-fill the "Delete all pages from a domain" text
+  input further down the page and scroll to it — forcing a second
+  click on a *different* button to finally delete. That's two
+  half-working UIs stitched together. Now the row button runs the
+  delete directly (confirm dialog + toast, same as the typed-domain
+  path), so one click = one delete.
+
 ## 1.8.6 — 2026-05-04 — Fix adjacent-element text gluing (searchability)
 
 Reported: indexing an Amazon phonetool page with DOM like

@@ -4,6 +4,7 @@ All published builds of FindThatPage. Each release has a folder with the install
 
 | Version | Date | Notes |
 |---|---|---|
+| [v1.8.1](./v1.8.1/RELEASE_NOTES.md) | 2026-05-04 | Release |
 | [v1.8.0](./v1.8.0/RELEASE_NOTES.md) | 2026-05-04 | Release |
 | [v1.7.0](./v1.7.0/RELEASE_NOTES.md) | 2026-05-03 | Release |
 | [v1.6.0](./v1.6.0/RELEASE_NOTES.md) | 2026-05-03 | Release |

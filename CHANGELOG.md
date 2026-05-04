@@ -2,6 +2,14 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.8.1 — 2026-05-03 — Popup Related fix
+
+- **Fix:** The "Related" button introduced in 1.8.0 never rendered in the
+  popup (the most-used surface). Overlay and full search had it wired;
+  the popup's `ResultCard` was missing the `onShowRelated` prop, which
+  conditionally hides the button entirely. Now wired in all three
+  entrypoints.
+
 ## 1.8.0 — 2026-05-03 — Related pages, bulk forget, auto-pin, polish
 
 ### New: related pages

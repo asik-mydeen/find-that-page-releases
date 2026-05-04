@@ -2,6 +2,37 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.8.6 — 2026-05-04 — Fix adjacent-element text gluing (searchability)
+
+Reported: indexing an Amazon phonetool page with DOM like
+`<span>Sup Soln-Fxd</span><h3>Harsh Shah</h3>` stored the body text as
+`"Sup Soln-FxdHarsh Shah"` — two consecutive elements with no space
+between their text content. Searching for **Harsh** then returned no
+result, because the token in the index was `fxdharsh`.
+
+Root cause: both extraction paths (Mozilla Readability output +
+legacy tag stripper) called `Node.textContent`, which concatenates all
+descendant text verbatim with no separator. Whatever the DOM looks
+like, `textContent` gives you one fused string. Block-level boundaries
+are invisible to it.
+
+Fix: replaced both paths with `extractTextWithSeparators()`, a
+block-aware walker that emits a space around every block-level element
+(`<p>`, `<h1>`–`<h6>`, `<div>`, `<li>`, `<br>`, `<td>`, etc., 40+
+tags). Inline elements (`<span>`, `<em>`, `<a>`, `<strong>`) still
+concat without a gap, so `<em>bold</em>face` stays `boldface` and
+doesn't hurt phrase-match fidelity.
+
+No schema change. Newly indexed pages extract cleanly from now on.
+Previously indexed pages keep their glued text — revisit the tab to
+re-index and pick up the fix, or wait for the next auto-reindex pass
+(10 min on visible tabs).
+
+### Tests
+- +7 new tests: the exact `Soln-Fxd / Harsh Shah` regression,
+  block vs. inline behavior, `<br>` handling, whitespace collapse,
+  empty-root edge case. 312 tests green total.
+
 ## 1.8.5 — 2026-05-04 — Show matching text from deep in the page
 
 Result cards were showing each page's summary instead of the actual

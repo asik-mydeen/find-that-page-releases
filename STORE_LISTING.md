@@ -1,4 +1,4 @@
-# Chrome Web Store Listing — FindThatPage v1.8.2
+# Chrome Web Store Listing — FindThatPage v1.8.3
 
 ## Name
 
@@ -224,4 +224,4 @@ GitHub issues: https://github.com/asik-mydeen/find-that-page-releases/issues
 
 ## Submission artifact
 
-Upload `store/dist/find-that-page-1.8.2-chrome.zip` to the Chrome Web Store developer console.
+Upload `store/dist/find-that-page-1.8.3-chrome.zip` to the Chrome Web Store developer console.

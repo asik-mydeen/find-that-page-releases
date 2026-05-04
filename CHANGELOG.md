@@ -2,6 +2,33 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.8.3 — 2026-05-03 — Related now actually means related
+
+Reports on 1.8.2 showed Related still surfacing unrelated pages:
+clicking Related on an Amazon approvals page pulled up "What's new in
+Chrome extensions" because both were visited in the same browser
+session. Three underlying problems, all fixed:
+
+- **Co-visit alone no longer qualifies.** The 4-hour visit window is
+  an incidental signal (browsers naturally co-locate unrelated tabs),
+  not a topical one. It's demoted from "qualifier" to "tiebreaker in
+  the final ranking."
+- **Stronger topical bar.** A candidate must share **≥3 meaningful
+  keywords** with the source page — or share ≥1 meaningful keyword
+  AND come from the same site. Below that, it's dropped.
+- **Boilerplate stoplist.** Generic keywords (`page`, `home`, `view`,
+  `settings`, `website`, `loading`, 40+ more) used to drive false
+  matches because they appeared in nearly every page's keyword set.
+  They're now filtered out of the topical-match path; real
+  discriminating vocabulary (`webassembly`, `kubernetes`, `typescript`)
+  still counts.
+
+### Tests
+- +7 new tests for the FTS keyword sanitizer covering punctuation,
+  numeric-only fragments, short tokens, and the stoplist. 295 tests
+  green total.
+- No schema change.
+
 ## 1.8.2 — 2026-05-03 — Related correctness fix
 
 - **Fix:** Clicking **Related** on a page with keywords like `node.js`,

@@ -2,6 +2,25 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.9.1 — 2026-05-04 — "This site" defaults ON when the tab is pivotable
+
+Follow-up to 1.9.0. Opening the popup/overlay/full-search on an
+http(s) page now defaults straight into the **This site** pill — so
+you see your history for the current site immediately, no click
+required.
+
+Auto-fallback safety net: if you're on a site you've never indexed
+before (and therefore "This site" would filter to nothing), the
+first search response silently drops the scope back to Recent. You
+never open to an empty list.
+
+Manual clicks on any pill disable the auto-fallback for that
+session, so your choice always wins.
+
+On pages where there's no pivotable domain (chrome://, about:,
+extension pages), behavior is unchanged — pill hidden, Recent is
+the default.
+
 ## 1.9.0 — 2026-05-04 — "This site" empty-state filter
 
 New third pill in the empty-state sort toggle: **This site**. Click

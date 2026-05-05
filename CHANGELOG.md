@@ -2,6 +2,38 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.9.0 — 2026-05-04 — "This site" empty-state filter
+
+New third pill in the empty-state sort toggle: **This site**. Click
+it with the search box empty to see only pages from the domain of
+your currently-active tab, sorted by frecency.
+
+- Reading *Kubernetes docs* and want a quick recap of everything
+  you've read on kubernetes.io? Click "This site."
+- Reading a GitHub PR and want to see your prior GitHub pages?
+  Same — one click.
+- Start typing → scope drops automatically so full-text search runs
+  across your entire memory. Clear the query → scope returns.
+
+Available in:
+- **Popup** — learns the active tab via `browser.tabs.query`.
+- **Overlay** (Ctrl+Shift+K on any page) — learns the host page via
+  a URL param passed by the content script.
+- **Full-tab search** — learns the launching tab via a URL param
+  passed by the background's open-search command.
+
+Pill is **hidden** when there's no pivotable domain (chrome://,
+about:, extension pages, data:/blob: URIs) — offering it there
+would point at zero results.
+
+No schema change. No persistence: opens in its default off state
+every popup/overlay/tab, so it's opt-in per visit.
+
+### Tests
+- +6 tests for `getSourceDomain()` covering http/https extraction,
+  `www.` stripping, all unpivotable protocols, malformed input,
+  and subdomains. 318 tests green total.
+
 ## 1.8.7 — 2026-05-04 — Top sources "Delete pages" actually deletes
 
 - **Fix:** Clicking **Delete pages** on a row in the **Top sources**

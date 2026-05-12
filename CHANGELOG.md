@@ -2,6 +2,21 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.11.1 — 2026-05-12 — Smart search toggle no longer clobbered by slider
+
+**Fix:** Adjusting the Semantic weight slider after turning Smart
+search on would silently turn it back off. The Options page kept
+`settings` in React state and re-saved the whole object on every
+field change; the SmartSearchSection's enable/disable buttons wrote
+to storage from the background without notifying the parent. Sliding
+the alpha then saved the stale "off" value back over the freshly-
+enabled flag.
+
+Fix: `updateSettings` now re-reads from storage on every call and
+merges only the user's actual delta on top, so cross-component writes
+from the background can no longer be clobbered by an unrelated UI
+edit. Same protection covers any future out-of-band settings writes.
+
 ## 1.11.0 — 2026-05-12 — Offline reader view
 
 Click **Read** on any search result to open a clean Medium-style

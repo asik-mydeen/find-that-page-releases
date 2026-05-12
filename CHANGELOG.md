@@ -2,6 +2,55 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.11.0 — 2026-05-12 — Offline reader view
+
+Click **Read** on any search result to open a clean Medium-style
+reading pane that works fully offline. No live fetch — your
+indexed copy of the page is the source of truth.
+
+### How it works
+- **Mozilla Readability** (the same engine Firefox Reader View uses)
+  captures cleaned HTML alongside flat text at index time. Article
+  pages get full structure: headings, paragraphs, links, lists,
+  blockquotes, images, code blocks.
+- **DOMPurify sanitization** strips scripts, event handlers,
+  `javascript:`/`data:` URLs, and anything not on a strict article-
+  tag allow-list before rendering. Links open in new tabs with
+  `noopener noreferrer`.
+- **Gzip compression** keeps the on-device storage cost down —
+  HTML payloads compress 70–85% in practice.
+- **Legacy fallback** — pages indexed before this release fall back
+  to a heuristic 3-sentence-paragraph splitter so the reader is
+  still useful immediately. A "Refresh snapshot" button re-extracts
+  with full structure on demand.
+
+### UI
+- New "Read" button on every result card (popup, overlay, full search)
+- "Refresh snapshot" footer button re-indexes from the live page
+- Saved-snapshot banner explains this is your archive, not the live
+  page, with a one-click "Open live page" escape hatch
+- Possibly-clipped indicator when stored text is at the storage cap
+- Esc closes the reader and returns to search
+- Query terms from the referring search are highlighted inline
+- Print CSS produces a clean printable archive (Cmd+P)
+- Dark-mode + light-mode honored via existing CSS custom properties
+
+### Extractor changes
+- Block-level tags now emit hard paragraph breaks (`\n\n`) at
+  `<p>`, `<h1-6>`, `<li>`, `<blockquote>`, `<pre>`, `<br>`,
+  `<figcaption>`. Search tokenization is unaffected (BM25 ignores
+  whitespace shape); the reader uses the breaks for paragraph splits.
+
+### Privacy posture unchanged
+- All extraction, storage, and rendering stays on-device. No new
+  network calls. Images load from their original CDN URLs (graceful
+  placeholder when offline / dead).
+- Export/import round-trip the HTML payload.
+
+### Tests
+- 416 tests passing (+36 new: parseBody, highlight, sanitize, gzip,
+  schema v4→v5 migration).
+
 ## 1.10.0 — 2026-05-12 — On-device semantic search (opt-in)
 
 Local-first semantic search lands, built on MiniLM-L6-v2 running entirely

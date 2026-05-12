@@ -2,6 +2,66 @@
 
 All notable changes to FindThatPage are documented here.
 
+## 1.10.0 — 2026-05-12 — On-device semantic search (opt-in)
+
+Local-first semantic search lands, built on MiniLM-L6-v2 running entirely
+in the browser. No backend, no cloud, no API keys. The original keyword
+search is still the default; semantic search is strictly opt-in.
+
+### How it works
+- **Model**: all-MiniLM-L6-v2 via transformers.js + ONNX Runtime Web.
+  384-dim unit-normalized embeddings, int8-quantized per vector for
+  storage density.
+- **Where it runs**: in an offscreen document on Chromium (preserves
+  `chrome.runtime` access so transformers.js loads ORT from the
+  bundled extension origin, not via the `blob:` URLs MV3 CSP rejects).
+  Firefox MV2 runs it on the persistent background page for the same
+  reason.
+- **When it runs**: sweep is triggered by `chrome.idle` state changes
+  so it only embeds when your browser is idle. Manual "Sweep now" and
+  "Re-embed all" controls are in Options.
+- **Storage**: one `chunk_embeddings` row per FTS chunk. Each chunk
+  gets a `scale` float + 384 int8 bytes — ~400 bytes/chunk.
+
+### Search behavior
+- **Hybrid rerank**: when BM25 returns rows, the top candidates are
+  reordered by `(1 - α) * bm25_norm + α * cosine_clipped`. `α`
+  (Smart search strength) defaults to 0.4 and is user-tunable in
+  Options.
+- **Paraphrase rescue**: when BM25 returns nothing but the query has
+  semantic weight, a full scan of stored embeddings surfaces the
+  best cosine match. Threshold calibrated to 0.1 for MiniLM's
+  short-query behavior on long-form chunks.
+
+### Reset Local Storage
+New recovery tool in **Options → Backup & data**: wipes the on-device
+SQLite store and re-initializes. Use this if indexing or search fails
+with a storage error (OPFS SyncAccessHandle lock contention after a
+crashed offscreen document). Re-import from your exported JSON to
+restore your pages.
+
+### Bug fixes
+- FTS5 in contentless mode (`content=''`) doesn't retain body text —
+  the embedding sweep was encoding empty strings for every chunk.
+  Fixed by re-chunking from `pages.text` in JS during the sweep's
+  `fetchUnembeddedChunks` call.
+- `chrome.runtime.sendMessage` serializes `Uint8Array` into plain
+  objects; binary binds and BLOB result columns both needed envelope
+  wrap/unwrap around the offscreen boundary.
+
+### Privacy posture unchanged
+- No network calls at index time. Model assets are downloaded once
+  when you opt in (~25 MB), stored in CacheStorage, never fetched
+  again.
+- Nothing leaves the device. No telemetry, no analytics, no
+  "anonymous crash reports."
+- Feature is off by default. Toggle in **Options → Smart search**.
+
+### Tests
+- 380 tests passing (+62 for the semantic path: int8 quantization,
+  cosine F32↔int8, hybrid score, paraphrase rescue scoring, sweep
+  batch math, etc.)
+
 ## 1.9.1 — 2026-05-04 — "This site" defaults ON when the tab is pivotable
 
 Follow-up to 1.9.0. Opening the popup/overlay/full-search on an
